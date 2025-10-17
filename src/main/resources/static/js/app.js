@@ -4,22 +4,15 @@ var app = (function () {
     var api = apiclient;
 
     var currentAuthor = null;
-
     var currentBlueprints = [];
     var currentBlueprint = null;
 
-    var setAuthor = function (authorName) {
-        currentAuthor = authorName;
-    };
-
-    var getAuthor = function () {
-        return currentAuthor;
-    };
+    var setAuthor = function (authorName) { currentAuthor = authorName; };
+    var getAuthor = function () { return currentAuthor; };
 
     var updateBlueprintsByAuthor = function (author) {
         setAuthor(author);
-
-        api.getBlueprintsByAuthor(author, function (data) {
+        return api.getBlueprintsByAuthor(author).then(function (data) {
             if (!data || data.length === 0) {
                 alert('Author not found');
                 return;
@@ -61,18 +54,51 @@ var app = (function () {
             $('#totalPoints').text(totalPoints);
             $('#tableWrapper').show();
             $('#emptyState').hide();
-        });
+
+            return data;
+        })
+            .catch(function (err) {
+                console.error('Error obtaining blueprints:', err);
+                alert('Error obtaining blueprints for author: ' + author);
+            });
     };
 
     var canvasBlueprint = function (author, blueprintName) {
-        api.getBlueprintsByNameAndAuthor(author, blueprintName, function (data) {
-            if (!data || !data.points || data.points.length === 0) {
-                alert('Blueprint not found or has no points');
-                return;
-            }
-            currentBlueprint = data;
-            repaintCanvas();
-        });
+        return api.getBlueprintsByNameAndAuthor(author, blueprintName)
+            .then(function (data) {
+                if (!data || !data.points || data.points.length === 0) {
+                    alert('Blueprint not found or has no points');
+                    return;
+                }
+                currentBlueprint = data;
+                repaintCanvas();
+                return data;
+            })
+            .catch(function (err) {
+                console.error('Error obtaining blueprint:', err);
+                alert('Error obtaining blueprint: ' + blueprintName + ' for author: ' + author);
+            });
+    }
+
+    var saveBlueprint = function () {
+        if (!currentAuthor || !currentBlueprint) {
+            alert('No author or blueprint selected');
+            return;
+        }
+
+        $('#saveBtn').prop('disabled', true);
+        return api.updateBlueprintByNameAndAuthor(currentBlueprint)
+            .then(function () {
+                alert('Blueprint updated successfully');
+                updateBlueprintsByAuthor(currentAuthor);
+            })
+            .catch(function (err) {
+                console.error('Error updating blueprint:', err);
+                alert('Error updating blueprint: ' + currentBlueprint.name + ' for author: ' + currentAuthor);
+            })
+            .then(function () {
+                $('#saveBtn').prop('disabled', false);
+            });
     }
 
     var repaintCanvas = function () {
@@ -113,22 +139,6 @@ var app = (function () {
             repaintCanvas();
         }
     };
-
-    var saveBlueprint = function () {
-        if (!currentAuthor || !currentBlueprint) {
-            alert('No author or blueprint selected');
-            return;
-        }
-
-        api.updateBlueprintByNameAndAuthor(currentAuthor, currentBlueprint.name, currentBlueprint, function (data) {
-            if (!data) {
-                alert('Error updating blueprint');
-                return;
-            }
-            alert('Blueprint updated successfully');
-            updateBlueprintsByAuthor(currentAuthor);
-        });
-    }
 
     return {
         setAuthor: setAuthor,

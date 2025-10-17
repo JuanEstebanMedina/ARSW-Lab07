@@ -11,14 +11,12 @@ var canvasHandler = (function () {
 
     function toCanvasCoords(ev, canvas) {
         var rect = canvas.getBoundingClientRect();
-        // usar clientX/Y (presentes tanto en PointerEvent como en MouseEvent)
         var cx = ev.clientX;
         var cy = ev.clientY;
 
         var xCss = cx - rect.left;
         var yCss = cy - rect.top;
 
-        // escalar por si el canvas está redimensionado por CSS
         var scaleX = canvas.width / rect.width;
         var scaleY = canvas.height / rect.height;
 
