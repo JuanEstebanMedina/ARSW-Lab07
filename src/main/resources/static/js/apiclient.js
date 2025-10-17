@@ -10,12 +10,12 @@ var apiclient = (function () {
             url: baseUrl + '/' + author,
             method: 'GET',
             success: function (data) {
-                console.log('Blueprints obtenidos:', data);
+                console.log('Obtained blueprints:', data);
                 callback(data);
             },
             error: function (xhr, status, error) {
-                console.error('Error al obtener blueprints:', error);
-                console.error('Status:', xhr.status);
+                console.error('Error obtaining blueprints:', error);
+                console.error('Status:', status);
                 console.error('Response:', xhr.responseText);
                 callback(null);
             }
@@ -27,12 +27,31 @@ var apiclient = (function () {
             url: baseUrl + '/' + author + '/' + bpname,
             method: 'GET',
             success: function (data) {
-                console.log('Blueprint obtenido:', data);
+                console.log('Obtained blueprint:', data);
                 callback(data);
             },
             error: function (xhr, status, error) {
-                console.error('Error al obtener blueprint:', error);
+                console.error('Error obtaining blueprint:', error);
                 console.error('Status:', xhr.status);
+                console.error('Response:', xhr.responseText);
+                callback(null);
+            }
+        });
+    };
+
+    var updateBlueprintByNameAndAuthor = function (author, bpname, blueprint, callback) {
+        $.ajax({
+            url: baseUrl + '/' + author + '/' + bpname,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(blueprint),
+            success: function (data) {
+                console.log('Updated blueprint:', data);
+                callback(data);
+            },
+            error: function (xhr, status, error) {
+                console.error('Error updating blueprint:', error);
+                console.error('Status:', status);
                 console.error('Response:', xhr.responseText);
                 callback(null);
             }
@@ -41,7 +60,8 @@ var apiclient = (function () {
 
     return {
         getBlueprintsByAuthor: getBlueprintsByAuthor,
-        getBlueprintsByNameAndAuthor: getBlueprintsByNameAndAuthor
+        getBlueprintsByNameAndAuthor: getBlueprintsByNameAndAuthor,
+        updateBlueprintByNameAndAuthor: updateBlueprintByNameAndAuthor
     };
 
 })();

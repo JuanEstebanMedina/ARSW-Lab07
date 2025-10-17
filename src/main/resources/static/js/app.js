@@ -6,6 +6,7 @@ var app = (function () {
     var currentAuthor = null;
 
     var currentBlueprints = [];
+    var currentBlueprint = null;
 
     var setAuthor = function (authorName) {
         currentAuthor = authorName;
@@ -69,41 +70,72 @@ var app = (function () {
                 alert('Blueprint not found or has no points');
                 return;
             }
-
-            var canvas = document.getElementById('blueprintCanvas');
-            var ctx = canvas.getContext('2d');
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            $('#currentBlueprintName').text(blueprintName);
-
-            $('#canvasContainer').show();
-
-            ctx.strokeStyle = '#ffffffff';
-            ctx.lineWidth = 2;
-
-            ctx.beginPath();
-            ctx.moveTo(data.points[0].x, data.points[0].y);
-            for (var i = 1; i < data.points.length; i++) {
-                ctx.lineTo(data.points[i].x, data.points[i].y);
-            }
-            ctx.stroke();
-
-            ctx.fillStyle = '#2563EB';
-
-            data.points.forEach(function (point) {
-                ctx.beginPath();
-                ctx.arc(point.x, point.y, 4, 0, 2 * Math.PI);
-                ctx.fill();
-            });
+            currentBlueprint = data;
+            repaintCanvas();
         });
     }
 
+    var repaintCanvas = function () {
+        var canvas = document.getElementById('blueprintCanvas');
+        var ctx = canvas.getContext('2d');
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        $('#currentBlueprintName').text(currentBlueprint.name);
+
+        $('#canvasContainer').show();
+
+        ctx.strokeStyle = '#ffffffff';
+        ctx.lineWidth = 2;
+
+        ctx.beginPath();
+        ctx.moveTo(currentBlueprint.points[0].x, currentBlueprint.points[0].y);
+        for (var i = 1; i < currentBlueprint.points.length; i++) {
+            ctx.lineTo(currentBlueprint.points[i].x, currentBlueprint.points[i].y);
+        }
+        ctx.stroke();
+
+        ctx.fillStyle = '#2563EB';
+
+        currentBlueprint.points.forEach(function (point) {
+            ctx.beginPath();
+            ctx.arc(point.x, point.y, 4, 0, 2 * Math.PI);
+            ctx.fill();
+        });
+    }
+
+    var _onCanvasPointer = function (type, x, y) {
+        console.log('canvas pointer', type, x, y);
+        if (!currentBlueprint) return;
+
+        if (type === 'down' || type === 'move') {
+            currentBlueprint.points.push({ x: x, y: y });
+            repaintCanvas();
+        }
+    };
+
+    var saveBlueprint = function () {
+        if (!currentAuthor || !currentBlueprint) {
+            alert('No author or blueprint selected');
+            return;
+        }
+
+        api.updateBlueprintByNameAndAuthor(currentAuthor, currentBlueprint.name, currentBlueprint, function (data) {
+            if (!data) {
+                alert('Error updating blueprint');
+                return;
+            }
+            alert('Blueprint updated successfully');
+            updateBlueprintsByAuthor(currentAuthor);
+        });
+    }
 
     return {
         setAuthor: setAuthor,
         getAuthor: getAuthor,
-        updateBlueprintsByAuthor: updateBlueprintsByAuthor
+        updateBlueprintsByAuthor: updateBlueprintsByAuthor,
+        saveBlueprint: saveBlueprint,
+        _onCanvasPointer: _onCanvasPointer
     };
 
 })();
@@ -122,5 +154,9 @@ $(document).ready(function () {
         if (e.which === 13) {
             $('#getBlueprintsBtn').click();
         }
+    });
+
+    $('#saveBtn').click(function () {
+        app.saveBlueprint();
     });
 });

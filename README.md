@@ -1,7 +1,7 @@
 # ARSW-Lab07
 
 **Escuela Colombiana de Ingeniería Julio Garavito**  
-**Arquiecturas de Software - ARSW**  
+**Arquitecturas de Software - ARSW**  
 **Laboratorio Número 7**
 
 **Miembros:**
