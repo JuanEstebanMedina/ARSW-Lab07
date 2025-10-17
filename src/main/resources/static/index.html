@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueprints</title>
+
+    <script src="/webjars/jquery/3.1.0/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #2d3748;
+            padding: 40px 20px;
+        }
+
+        .card {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #374151;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            background: #1f2937;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 32px;
+            height: 32px;
+            background: #3b82f6;
+            border-radius: 8px;
+            margin-right: 12px;
+        }
+
+        .app-name {
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .main-content {
+            display: flex;
+        }
+
+        .left-panel {
+            width: 35%;
+            padding: 40px;
+            background: #374151;
+        }
+
+        .right-panel {
+            width: 65%;
+            padding: 40px;
+            background: #2d3748;
+        }
+
+        .title {
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #9ca3af;
+            font-size: 13px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #d1d5db;
+            font-size: 13px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            background: #4b5563;
+            border: 1px solid #6b7280;
+            border-radius: 8px;
+            color: white;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: #4b5563;
+        }
+
+        input::placeholder {
+            color: #9ca3af;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: #3b82f6;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .author-info {
+            margin: 30px 0;
+            display: none;
+        }
+
+        .author-info.show {
+            display: block;
+        }
+
+        .author-name {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .total-points {
+            background: #1f2937;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .total-label {
+            color: #9ca3af;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .total-number {
+            color: white;
+            font-size: 36px;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        .section-title {
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            background: #374151;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        th {
+            background: #1f2937;
+            color: #9ca3af;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 12px 16px;
+            text-align: left;
+        }
+
+        td {
+            color: white;
+            padding: 12px 16px;
+            border-bottom: 1px solid #4b5563;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .btn-open {
+            background: #3b82f6;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 6px;
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-open:hover {
+            background: #2563eb;
+        }
+
+        .canvas-section {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .canvas-section.show {
+            display: block;
+        }
+
+        .canvas-title {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .canvas-title span {
+            color: #3b82f6;
+        }
+
+        canvas {
+            background: #374151;
+            border-radius: 8px;
+            display: block;
+            width: 100%;
+            border: 1px solid #4b5563;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                flex-direction: column;
+            }
+            .left-panel, .right-panel {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <div class="header">
+            <div class="logo"></div>
+            <div class="app-name">Blueprints app</div>
+        </div>
+
+        <div class="main-content">
+            <!-- LEFT PANEL -->
+            <div class="left-panel">
+                <h1 class="title">Blueprints</h1>
+                <p class="subtitle">Manage and visualize technical blueprints</p>
+
+                <div class="form-group">
+                    <label>Author</label>
+                    <input type="text" id="authorInput" placeholder="johnconnor">
+                </div>
+
+                <button id="getBlueprintsBtn" class="btn-primary">Get blueprints</button>
+
+                <div id="authorInfo" class="author-info">
+                    <div class="author-name"><span id="authorName"></span>'s blueprints:</div>
+                    <div class="total-points">
+                        <div class="total-label">Total user points</div>
+                        <div class="total-number" id="totalPoints">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL -->
+            <div class="right-panel">
+                <div class="section-title">Blueprint Collection</div>
+
+                <div id="tableWrapper" style="display: none;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Blueprint name</th>
+                                <th>Number of points</th>
+                                <th>Open</th>
+                            </tr>
+                        </thead>
+                        <tbody id="blueprintsTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div id="emptyState" class="empty-state">
+                    Enter an author name to view blueprints
+                </div>
+
+                <div class="canvas-section" id="canvasContainer">
+                    <div class="canvas-title">Current blueprint: <span id="currentBlueprintName"></span></div>
+                    <canvas id="blueprintCanvas" width="700" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/apimock.js"></script>
+    <script src="js/apiclient.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
