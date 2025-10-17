@@ -5,7 +5,6 @@
  */
 package edu.eci.arsw.blueprints.controllers;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +19,6 @@ import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
 import edu.eci.arsw.blueprints.persistence.BlueprintPersistenceException;
 import edu.eci.arsw.blueprints.services.BlueprintsServices;
 
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,7 +38,7 @@ public class BlueprintAPIController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> getAllBlueprints() {
         try {
-            //obtener datos que se enviarán a través del API
+            // obtener datos que se enviarán a través del API
             Set<Blueprint> data = blueprintServices.getAllBlueprints();
             return new ResponseEntity<>(data, HttpStatus.OK);
         } catch (Exception ex) {
@@ -52,7 +50,7 @@ public class BlueprintAPIController {
     @RequestMapping(value = "/{author}", method = RequestMethod.GET)
     public ResponseEntity<?> getBlueprintsByAuthor(@PathVariable String author) {
         try {
-            //obtener datos que se enviarán a través del API
+            // obtener datos que se enviarán a través del API
             Set<Blueprint> data = blueprintServices.getBlueprintsByAuthor(author);
             return new ResponseEntity<>(data, HttpStatus.OK);
         } catch (BlueprintNotFoundException ex) {
@@ -63,7 +61,7 @@ public class BlueprintAPIController {
     @RequestMapping(value = "/{author}/{bpname}", method = RequestMethod.GET)
     public ResponseEntity<?> getBlueprint(@PathVariable String author, @PathVariable String bpname) {
         try {
-            //obtener datos que se enviarán a través del API
+            // obtener datos que se enviarán a través del API
             Blueprint data = blueprintServices.getBlueprint(author, bpname);
 
             return new ResponseEntity<>(data, HttpStatus.OK);
@@ -75,7 +73,7 @@ public class BlueprintAPIController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> addNewBlueprint(@RequestBody Blueprint bp) {
         try {
-            //obtener datos que se enviarán a través del API
+            // obtener datos que se enviarán a través del API
             blueprintServices.addNewBlueprint(bp);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (BlueprintPersistenceException ex) {
@@ -85,14 +83,27 @@ public class BlueprintAPIController {
     }
 
     @RequestMapping(value = "/{author}/{bpname}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateBlueprint(@PathVariable String author, @PathVariable String bpname, @RequestBody Blueprint blueprint) {
+    public ResponseEntity<?> updateBlueprint(@PathVariable String author, @PathVariable String bpname,
+            @RequestBody Blueprint blueprint) {
         try {
-            //obtener datos que se enviarán a través del API
+            // obtener datos que se enviarán a través del API
             blueprintServices.updateBlueprint(author, bpname, blueprint);
-            return new ResponseEntity<>("El plano: "+bpname+"se actualizó correctamnete", HttpStatus.OK);
+            return new ResponseEntity<>("El plano: " + bpname + "se actualizó correctamnete", HttpStatus.OK);
         } catch (BlueprintNotFoundException ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (BlueprintPersistenceException  ex) {
+        } catch (BlueprintPersistenceException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @RequestMapping(value = "/{author}/{bpname}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteBlueprint(@PathVariable String author, @PathVariable String bpname) {
+        try {
+            blueprintServices.deleteBlueprint(author, bpname);
+            return new ResponseEntity<>("El plano: " + bpname + " se eliminó correctamente", HttpStatus.OK);
+        } catch (BlueprintNotFoundException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (BlueprintPersistenceException ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
         }
     }

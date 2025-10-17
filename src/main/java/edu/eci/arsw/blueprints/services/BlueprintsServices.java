@@ -33,7 +33,8 @@ public class BlueprintsServices {
      *
      * @param bp new blueprint
      * @throws BlueprintPersistenceException if a blueprint with the same name
-     * already exists, or any other low-level persistence error occurs.
+     *                                       already exists, or any other low-level
+     *                                       persistence error occurs.
      */
     public void addNewBlueprint(Blueprint bp) throws BlueprintPersistenceException {
         bpp.saveBlueprint(bp);
@@ -50,7 +51,7 @@ public class BlueprintsServices {
     /**
      *
      * @param author blueprint's author
-     * @param name blueprint's name
+     * @param name   blueprint's name
      * @return the blueprint of the given name created by the given author
      * @throws BlueprintNotFoundException if there is no such blueprint
      */
@@ -74,8 +75,31 @@ public class BlueprintsServices {
         return filtered;
     }
 
-    public void updateBlueprint(String author, String name, Blueprint updatedBlueprint) throws BlueprintNotFoundException, BlueprintPersistenceException {
+    /**
+     * 
+     * @param author           blueprint's author
+     * @param name             blueprint's name
+     * @param updatedBlueprint blueprint with updated data
+     * @throws BlueprintNotFoundException    if there is no such blueprint
+     * @throws BlueprintPersistenceException if a low-level persistence error
+     *                                       occurs.
+     */
+    public void updateBlueprint(String author, String name, Blueprint updatedBlueprint)
+            throws BlueprintNotFoundException, BlueprintPersistenceException {
         bpp.updateBlueprint(author, name, updatedBlueprint);
+    }
+
+    /**
+     * 
+     * @param author blueprint's author
+     * @param name   blueprint's name
+     * @throws BlueprintNotFoundException if there is no such blueprint
+     * @throws BlueprintPersistenceException if a low-level persistence error
+     *                                       occurs.
+     */
+    public void deleteBlueprint(String author, String name)
+            throws BlueprintNotFoundException, BlueprintPersistenceException {
+        bpp.deleteBlueprint(author, name);
     }
 
 }
