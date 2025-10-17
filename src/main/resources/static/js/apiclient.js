@@ -1,48 +1,52 @@
-// punto 12
-var apiclient = (function() {
-
+// apiclient.js
+var apiclient = (function () {
 
     var baseUrl = 'http://localhost:8080/blueprints';
 
-
-    var getBlueprintsByAuthor = function(author, callback) {
-
-        $.ajax({
+    var getBlueprintsByAuthor = function (author) {
+        return $.ajax({
             url: baseUrl + '/' + author,
-            method: 'GET',
-            success: function(data) {
-                console.log('Blueprints obtenidos:', data);
-                callback(data);
-            },
-            error: function(xhr, status, error) {
-                console.error('Error al obtener blueprints:', error);
-                console.error('Status:', xhr.status);
-                console.error('Response:', xhr.responseText);
-                callback(null);
-            }
+            method: 'GET'
         });
     };
 
-    var getBlueprintsByNameAndAuthor = function(author, bpname, callback) {
-        $.ajax({
+    var getBlueprintsByNameAndAuthor = function (author, bpname) {
+        return $.ajax({
             url: baseUrl + '/' + author + '/' + bpname,
-            method: 'GET',
-            success: function(data) {
-                console.log('Blueprint obtenido:', data);
-                callback(data);
-            },
-            error: function(xhr, status, error) {
-                console.error('Error al obtener blueprint:', error);
-                console.error('Status:', xhr.status);
-                console.error('Response:', xhr.responseText);
-                callback(null);
-            }
+            method: 'GET'
+        });
+    };
+
+    var createBlueprint = function (bp) {
+        return $.ajax({
+            url: baseUrl,
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(bp)
+        });
+    };
+
+    var updateBlueprintByNameAndAuthor = function (bp) {
+        return $.ajax({
+            url: baseUrl + '/' + bp.author + '/' + bp.name,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(bp)
+        });
+    };
+
+    var deleteBlueprintByNameAndAuthor = function (author, name) {
+        return $.ajax({
+            url: baseUrl + '/' + author + '/' + name,
+            method: 'DELETE'
         });
     };
 
     return {
-        getBlueprintsByAuthor: getBlueprintsByAuthor,
-        getBlueprintsByNameAndAuthor: getBlueprintsByNameAndAuthor
+        getBlueprintsByAuthor,
+        getBlueprintsByNameAndAuthor,
+        createBlueprint,
+        updateBlueprintByNameAndAuthor,
+        deleteBlueprintByNameAndAuthor
     };
-
 })();
