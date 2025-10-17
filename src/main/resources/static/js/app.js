@@ -137,13 +137,47 @@ var app = (function () {
             });
     }
 
+    var deleteBlueprint = function () {
+        if (!currentAuthor || !currentBlueprint) {
+            alert('No author or blueprint selected');
+            return;
+        }
+
+        var bpAuthor = currentAuthor;
+        var bpName = currentBlueprint.name;
+
+        currentBlueprint.points = [];
+        repaintCanvas();
+
+        var op = isNewBlueprint
+            ? $.when()
+            : api.deleteBlueprintByNameAndAuthor(bpAuthor, bpName);
+
+        return op
+            .then(function () {
+                return updateBlueprintsByAuthor(bpAuthor);
+            })
+            .then(function () {
+                alert(isNewBlueprint ? 'Canvas cleared' : 'Blueprint deleted successfully');
+                currentBlueprint = null;
+                isNewBlueprint = false;
+                $('#currentBlueprintName').text('(no blueprint selected)');
+                $('#canvasContainer').hide();
+            })
+            .catch(function (err) {
+                console.error('Error deleting blueprint:', err);
+                alert('Error deleting blueprint: ' + bpName + ' for author: ' + bpAuthor);
+            });
+    };
+
+
     var repaintCanvas = function () {
         var canvas = document.getElementById('blueprintCanvas');
         var ctx = canvas.getContext('2d');
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        $('#currentBlueprintName').text(currentBlueprint.name);
+        $('#currentBlueprintName').text(currentBlueprint.name ?? '(no blueprint selected)');
         $('#canvasContainer').show();
 
         var pts = currentBlueprint.points || [];
@@ -185,6 +219,7 @@ var app = (function () {
         getAuthor,
         createNewBlueprint,
         updateBlueprintsByAuthor,
+        deleteBlueprint,
         saveBlueprint,
         _onCanvasPointer
     };
@@ -213,5 +248,9 @@ $(document).ready(function () {
 
     $('#saveBtn').click(function () {
         app.saveBlueprint();
+    });
+
+    $('#deleteBtn').click(function () {
+        app.deleteBlueprint();
     });
 });

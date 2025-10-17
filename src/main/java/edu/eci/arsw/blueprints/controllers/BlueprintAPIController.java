@@ -96,4 +96,16 @@ public class BlueprintAPIController {
         }
     }
 
+    @RequestMapping(value = "/{author}/{bpname}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteBlueprint(@PathVariable String author, @PathVariable String bpname) {
+        try {
+            blueprintServices.deleteBlueprint(author, bpname);
+            return new ResponseEntity<>("El plano: " + bpname + " se eliminó correctamente", HttpStatus.OK);
+        } catch (BlueprintNotFoundException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (BlueprintPersistenceException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
+        }
+    }
+
 }

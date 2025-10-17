@@ -44,4 +44,13 @@ public interface BlueprintsPersistence {
     public void updateBlueprint(String author, String bprintname, Blueprint updatedBlueprint)
             throws BlueprintNotFoundException, BlueprintPersistenceException;
 
+    /**
+     * 
+     * @param author     blueprint's author
+     * @param bprintname blueprint's name
+     * @throws BlueprintNotFoundException if there is no such blueprint
+     * @throws BlueprintPersistenceException if a low-level persistence error
+     *                                       occurs.
+     */
+    public void deleteBlueprint(String author, String bprintname) throws BlueprintNotFoundException, BlueprintPersistenceException;
 }

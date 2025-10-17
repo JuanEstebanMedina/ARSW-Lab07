@@ -35,10 +35,18 @@ var apiclient = (function () {
         });
     };
 
+    var deleteBlueprintByNameAndAuthor = function (author, name) {
+        return $.ajax({
+            url: baseUrl + '/' + author + '/' + name,
+            method: 'DELETE'
+        });
+    };
+
     return {
         getBlueprintsByAuthor,
         getBlueprintsByNameAndAuthor,
         createBlueprint,
-        updateBlueprintByNameAndAuthor
+        updateBlueprintByNameAndAuthor,
+        deleteBlueprintByNameAndAuthor
     };
 })();
