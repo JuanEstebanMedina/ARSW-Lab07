@@ -1,26 +1,20 @@
 var app = (function () {
 
-    // punto 13
     // var api = apimock;
     var api = apiclient;
 
-    // punto 4
     var currentAuthor = null;
 
-    // punto 4
     var currentBlueprints = [];
 
-    // punto 4
     var setAuthor = function (authorName) {
         currentAuthor = authorName;
     };
 
-    // punto 4
     var getAuthor = function () {
         return currentAuthor;
     };
 
-    // punto 5
     var updateBlueprintsByAuthor = function (author) {
         setAuthor(author);
 
@@ -30,7 +24,6 @@ var app = (function () {
                 return;
             }
 
-            // punto 5.1
             currentBlueprints = data.map(function (blueprint) {
                 return {
                     name: blueprint.name,
@@ -43,13 +36,11 @@ var app = (function () {
             $('#blueprintsTableBody').empty();
 
 
-            // punto 5.2
             currentBlueprints.map(function (blueprint) {
                 var row = $('<tr>');
                 row.append($('<td>').text(blueprint.name));
                 row.append($('<td>').text(blueprint.points));
 
-                // punto 10
                 var openButton = $('<button>')
                     .addClass('btn btn-sm btn-default')
                     .text('Open')
@@ -62,7 +53,6 @@ var app = (function () {
                 $('#blueprintsTableBody').append(row);
             });
 
-            // punto 5.3
             const totalPoints = currentBlueprints.reduce((acumulador, blueprint) => {
                 return acumulador + blueprint.points;
             }, 0);
@@ -73,7 +63,6 @@ var app = (function () {
         });
     };
 
-    // punto 9
     var canvasBlueprint = function (author, blueprintName) {
         api.getBlueprintsByNameAndAuthor(author, blueprintName, function (data) {
             if (!data || !data.points || data.points.length === 0) {
@@ -119,7 +108,6 @@ var app = (function () {
 
 })();
 
-// punto 6
 $(document).ready(function () {
     $('#getBlueprintsBtn').click(function () {
         var author = $('#authorInput').val().trim();

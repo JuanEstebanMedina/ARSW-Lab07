@@ -1,20 +1,19 @@
-// punto 12
-var apiclient = (function() {
+var apiclient = (function () {
 
 
     var baseUrl = 'http://localhost:8080/blueprints';
 
 
-    var getBlueprintsByAuthor = function(author, callback) {
+    var getBlueprintsByAuthor = function (author, callback) {
 
         $.ajax({
             url: baseUrl + '/' + author,
             method: 'GET',
-            success: function(data) {
+            success: function (data) {
                 console.log('Blueprints obtenidos:', data);
                 callback(data);
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error('Error al obtener blueprints:', error);
                 console.error('Status:', xhr.status);
                 console.error('Response:', xhr.responseText);
@@ -23,15 +22,15 @@ var apiclient = (function() {
         });
     };
 
-    var getBlueprintsByNameAndAuthor = function(author, bpname, callback) {
+    var getBlueprintsByNameAndAuthor = function (author, bpname, callback) {
         $.ajax({
             url: baseUrl + '/' + author + '/' + bpname,
             method: 'GET',
-            success: function(data) {
+            success: function (data) {
                 console.log('Blueprint obtenido:', data);
                 callback(data);
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error('Error al obtener blueprint:', error);
                 console.error('Status:', xhr.status);
                 console.error('Response:', xhr.responseText);

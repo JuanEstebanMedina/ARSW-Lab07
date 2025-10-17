@@ -1,261 +1,247 @@
-/* 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #2d3748;
+    padding: 40px 20px;
+}
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
+.card {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #374151;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
 
-        .container-fluid {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+.header {
+    background: #1f2937;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+}
 
-        .main-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            min-height: 600px;
-        }
+.logo {
+    width: 32px;
+    height: 32px;
+    background: #3b82f6;
+    border-radius: 8px;
+    margin-right: 12px;
+}
 
-        .left-panel {
-            background: linear-gradient(180deg, #2d3748 0%, #1a202c 100%);
-            color: white;
-            padding: 40px;
-            min-height: 600px;
-        }
+.app-name {
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+}
 
-        .right-panel {
-            padding: 40px;
-            background: white;
-            min-height: 600px;
-        }
+.main-content {
+    display: flex;
+}
 
-        .app-title {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: white;
-        }
+.left-panel {
+    width: 35%;
+    padding: 40px;
+    background: #374151;
+}
 
-        .app-subtitle {
-            color: #a0aec0;
-            margin-bottom: 40px;
-            font-size: 14px;
-        }
+.right-panel {
+    width: 65%;
+    padding: 40px;
+    background: #2d3748;
+}
 
-        .form-section {
-            margin-bottom: 30px;
-        }
+.title {
+    color: white;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
 
-        .form-label {
-            display: block;
-            color: #e2e8f0;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+.subtitle {
+    color: #9ca3af;
+    font-size: 13px;
+    margin-bottom: 30px;
+}
 
-        .input-group-custom {
-            position: relative;
-            margin-bottom: 20px;
-        }
+.form-group {
+    margin-bottom: 20px;
+}
 
-        .input-custom {
-            width: 100%;
-            padding: 14px 16px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            color: white;
-            font-size: 15px;
-            transition: all 0.3s ease;
-        }
+label {
+    display: block;
+    color: #d1d5db;
+    font-size: 13px;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
 
-        .input-custom:focus {
-            outline: none;
-            background: rgba(255, 255, 255, 0.15);
-            border-color: #667eea;
-        }
+input {
+    width: 100%;
+    padding: 12px 16px;
+    background: #4b5563;
+    border: 1px solid #6b7280;
+    border-radius: 8px;
+    color: white;
+    font-size: 15px;
+}
 
-        .input-custom::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
+input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: #4b5563;
+}
 
-        .btn-primary-custom {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+input::placeholder {
+    color: #9ca3af;
+}
 
-        .btn-primary-custom:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
-        }
+.btn-primary {
+    width: 100%;
+    background: #3b82f6;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+}
 
-        .author-info {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            display: none;
-        }
+.btn-primary:hover {
+    background: #2563eb;
+}
 
-        .author-name {
-            font-size: 18px;
-            font-weight: 600;
-            color: white;
-            margin-bottom: 5px;
-        }
+.author-info {
+    margin: 30px 0;
+    display: none;
+}
 
-        .total-points {
-            font-size: 24px;
-            font-weight: 700;
-            color: #667eea;
-        }
+.author-info.show {
+    display: block;
+}
 
-        .total-points-label {
-            font-size: 12px;
-            color: #a0aec0;
-            text-transform: uppercase;
-        }
+.author-name {
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
 
-        .right-panel-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #2d3748;
-            margin-bottom: 10px;
-        }
+.total-points {
+    background: #1f2937;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
 
-        .right-panel-subtitle {
-            color: #718096;
-            margin-bottom: 30px;
-        }
+.total-label {
+    color: #9ca3af;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
 
-        .blueprints-table {
-            width: 100%;
-            margin-bottom: 30px;
-        }
+.total-number {
+    color: white;
+    font-size: 36px;
+    font-weight: 700;
+    margin-top: 5px;
+}
 
-        .blueprints-table thead {
-            background: #f7fafc;
-        }
+.section-title {
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
 
-        .blueprints-table th {
-            padding: 15px;
-            text-align: left;
-            font-size: 12px;
-            font-weight: 600;
-            color: #4a5568;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 2px solid #e2e8f0;
-        }
+table {
+    width: 100%;
+    background: #374151;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
 
-        .blueprints-table td {
-            padding: 15px;
-            border-bottom: 1px solid #e2e8f0;
-            color: #2d3748;
-        }
+th {
+    background: #1f2937;
+    color: #9ca3af;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 12px 16px;
+    text-align: left;
+}
 
-        .blueprints-table tbody tr {
-            transition: all 0.2s ease;
-        }
+td {
+    color: white;
+    padding: 12px 16px;
+    border-bottom: 1px solid #4b5563;
+}
 
-        .blueprints-table tbody tr:hover {
-            background: #f7fafc;
-        }
+tr:last-child td {
+    border-bottom: none;
+}
 
-        .btn-view {
-            padding: 8px 16px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 6px;
-            color: white;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+.btn-open {
+    background: #3b82f6;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 6px;
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
 
-        .btn-view:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
+.btn-open:hover {
+    background: #2563eb;
+}
 
-        .canvas-container {
-            background: #f7fafc;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-        }
+.canvas-section {
+    margin-top: 20px;
+    display: none;
+}
 
-        .canvas-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #2d3748;
-            margin-bottom: 15px;
-        }
+.canvas-section.show {
+    display: block;
+}
 
-        #blueprintCanvas {
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            background: white;
-            max-width: 100%;
-        }
+.canvas-title {
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
 
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #a0aec0;
-        }
+.canvas-title span {
+    color: #3b82f6;
+}
 
-        .empty-state-icon {
-            font-size: 64px;
-            margin-bottom: 20px;
-            opacity: 0.3;
-        }
+canvas {
+    background: #374151;
+    border-radius: 8px;
+    display: block;
+    width: 100%;
+    border: 1px solid #4b5563;
+}
 
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
-        }
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6b7280;
+    font-size: 14px;
+}
 
-        .spinner {
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 3px solid white;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
+@media (max-width: 992px) {
+    .main-content {
+        flex-direction: column;
+    }
 
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        } */
+    .left-panel,
+    .right-panel {
+        width: 100%;
+    }
+}
