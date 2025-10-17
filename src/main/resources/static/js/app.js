@@ -6,6 +6,7 @@ var app = (function () {
     var currentAuthor = null;
     var currentBlueprints = [];
     var currentBlueprint = null;
+    var isNewBlueprint = false;
 
     var setAuthor = function (authorName) { currentAuthor = authorName; };
     var getAuthor = function () { return currentAuthor; };
@@ -71,6 +72,7 @@ var app = (function () {
                     return;
                 }
                 currentBlueprint = data;
+                isNewBlueprint = false;
                 repaintCanvas();
                 return data;
             })
@@ -80,21 +82,55 @@ var app = (function () {
             });
     }
 
+    var createNewBlueprint = function () {
+        if (!currentAuthor) {
+            alert('Please enter an author and load their blueprints first');
+            return;
+        }
+
+        var name = prompt('Nombre del nuevo blueprint:');
+        if (!name || !name.trim()) {
+            return;
+        }
+        name = name.trim();
+
+        currentBlueprint = {
+            author: currentAuthor,
+            name: name,
+            points: [],
+        };
+        isNewBlueprint = true;
+
+        repaintCanvas();
+    };
+
     var saveBlueprint = function () {
         if (!currentAuthor || !currentBlueprint) {
             alert('No author or blueprint selected');
             return;
         }
 
+        if (currentBlueprint.points.length === 0) {
+            alert('Cannot save a blueprint with no points');
+            return;
+        }
+
         $('#saveBtn').prop('disabled', true);
-        return api.updateBlueprintByNameAndAuthor(currentBlueprint)
+
+        var op = isNewBlueprint
+            ? api.createBlueprint(currentBlueprint) // POST if new
+            : api.updateBlueprintByNameAndAuthor(currentBlueprint); // PUT if exists
+
+        return op
             .then(function () {
-                alert('Blueprint updated successfully');
+                alert(isNewBlueprint ? 'Blueprint created successfully' : 'Blueprint updated successfully');
+                isNewBlueprint = false;
                 updateBlueprintsByAuthor(currentAuthor);
             })
             .catch(function (err) {
                 console.error('Error updating blueprint:', err);
-                alert('Error updating blueprint: ' + currentBlueprint.name + ' for author: ' + currentAuthor);
+                var what = isNewBlueprint ? 'creating' : 'updating';
+                alert('Error ' + what + ' blueprint: ' + currentBlueprint.name + ' for author: ' + currentAuthor);
             })
             .then(function () {
                 $('#saveBtn').prop('disabled', false);
@@ -108,8 +144,13 @@ var app = (function () {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         $('#currentBlueprintName').text(currentBlueprint.name);
-
         $('#canvasContainer').show();
+
+        var pts = currentBlueprint.points || [];
+
+        if (pts.length === 0) {
+            return;
+        }
 
         ctx.strokeStyle = '#ffffffff';
         ctx.lineWidth = 2;
@@ -133,7 +174,6 @@ var app = (function () {
     var _onCanvasPointer = function (type, x, y) {
         console.log('canvas pointer', type, x, y);
         if (!currentBlueprint) return;
-
         if (type === 'down' || type === 'move') {
             currentBlueprint.points.push({ x: x, y: y });
             repaintCanvas();
@@ -141,11 +181,12 @@ var app = (function () {
     };
 
     return {
-        setAuthor: setAuthor,
-        getAuthor: getAuthor,
-        updateBlueprintsByAuthor: updateBlueprintsByAuthor,
-        saveBlueprint: saveBlueprint,
-        _onCanvasPointer: _onCanvasPointer
+        setAuthor,
+        getAuthor,
+        createNewBlueprint,
+        updateBlueprintsByAuthor,
+        saveBlueprint,
+        _onCanvasPointer
     };
 
 })();
@@ -164,6 +205,10 @@ $(document).ready(function () {
         if (e.which === 13) {
             $('#getBlueprintsBtn').click();
         }
+    });
+
+    $('#createBtn').click(function () {
+        app.createNewBlueprint();
     });
 
     $('#saveBtn').click(function () {

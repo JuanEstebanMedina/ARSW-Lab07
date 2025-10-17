@@ -17,6 +17,15 @@ var apiclient = (function () {
         });
     };
 
+    var createBlueprint = function (bp) {
+        return $.ajax({
+            url: baseUrl,
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(bp)
+        });
+    };
+
     var updateBlueprintByNameAndAuthor = function (bp) {
         return $.ajax({
             url: baseUrl + '/' + bp.author + '/' + bp.name,
@@ -29,6 +38,7 @@ var apiclient = (function () {
     return {
         getBlueprintsByAuthor,
         getBlueprintsByNameAndAuthor,
+        createBlueprint,
         updateBlueprintByNameAndAuthor
     };
 })();
